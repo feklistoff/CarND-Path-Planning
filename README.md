@@ -16,7 +16,46 @@ In this project our goal is to safely navigate around a virtual highway with oth
 
 ## Reflection
 
+**According the rubric the car was programmed to do the following:**
 
+* the car is able to drive at least 4.32 miles without incident
+* the car drives according to the speed limit
+* max acceleration and jerk are not exceeded
+* car does not have collisions
+* the car stays in its lane, except for the time between changing lanes
+* the car is able to change lanes
+---
+**Overall implementation devided in sections:**
+
+* read 'telemetry' and get information about our car
+* set parameters for later use
+```c++
+// parameters
+double dt = 0.02; // timestep equal 0.02s
+double speed_limit = 49.5;
+double safe_dist_front = 20;
+double safe_dist_behind = 10;
+bool too_close = false; // if other car is too close
+bool too_close_left = false; // if other car from the left is too close
+bool too_close_right = false; // if other car from the right is too close
+bool too_close_behind = false; // if other car from behind is too close
+double dist_left = 1000; // gap
+double dist_right = 1000; // gap
+double ref_speed = 0;  // follow car ahead if can't go left or right
+```
+* read sensor fusion data and loop through every detected vehicle:
+  * calculate speed
+  * predict
+  * check if vehicle is in close proximity to our car
+  * using frenet coords data (d coordinate) get vehicles' lane
+  * decide if we can go left or right if needed
+  * check if there is enough space from behind
+  * calculate gaps from left and from right in order to choose where to go if needed
+  * check if we are too close to vehicle ahead
+
+* make a decision of what to do next based on the information we got in previous steps
+* control speed according speed limits and vehicles' proximity
+* generate trajectory (using c++ cubic spline library and detailed help from [project walkthrough video](https://www.youtube.com/watch?v=7sI3VHFPP0w))
 
 ## Basic Build Instructions
 
